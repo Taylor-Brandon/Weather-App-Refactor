@@ -4,17 +4,20 @@ export default function Search() {
     const [searchInput, setSearchInput] = useState('');
     const apiKey = process.env.REACT_APP_API_KEY; 
 
-    const handleChange = (e) => {
-        setSearchInput(e.target.value);
+    const handleChange = (event) => {
+        setSearchInput(event.target.value);
     };
 
     const handleSearchFormSubmit = (event) => {
         event.preventDefault();
 
-        if (!searchInput.trim()) {
+        if (!searchInput) {
             alert('You have not searched for a city!');
             return;
         }
+
+        localStorage.setItem('Search', JSON.stringify(searchInput));
+
         const queryString = `./weather-results.html?q=${searchInput}&appid=${apiKey}`;
         window.location.href = queryString;
     };
