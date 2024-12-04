@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Current from './current';
 import Future from './future';
 
@@ -7,52 +7,51 @@ export default function Search() {
     const apiKey = process.env.REACT_APP_API_KEY;
     const [weatherData, setWeatherData] = useState(null);
     const [futureData, setFutureData] = useState(null);
+    const [searchedCities, setSearchedCities] = useState([]);
+
+    useEffect(() => {
+        const storedCities = localStorage.getItem('searchHistory');
+        if (storedCities) {
+            setSearchedCities(JSON.parse(storedCities));
+        }
+    }, []);
 
     const handleChange = (event) => {
         setSearchInput(event.target.value);
     };
 
-    const handleSearchFormSubmit = async (event) => {
-        event.preventDefault();
-
-        if (!searchInput.trim()) {
-            alert('You have not searched for a city!');
-            return;
-        }
-
+    const fetchWeatherData = async (city) => {
         try {
-            const response = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?q=${searchInput}&appid=${apiKey}&units=metric`
+            // Fetch current weather
+            const weatherResponse = await fetch(
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
             );
 
-            if (!response.ok) {
+            if (!weatherResponse.ok) {
                 throw new Error('Failed to fetch weather data');
             }
 
-            const data = await response.json();
-
-            
+            const weather = await weatherResponse.json();
             setWeatherData({
-                title: data.name,
-                date: new Date(data.dt * 1000).toLocaleString(),
-                weather: data.weather[0].description,
-                temp: data.main.temp,
-                humidity: data.main.humidity,
-                wind: data.wind.speed,
+                title: weather.name,
+                date: new Date(weather.dt * 1000).toLocaleString(),
+                weather: weather.weather[0].description,
+                temp: weather.main.temp,
+                humidity: weather.main.humidity,
+                wind: weather.wind.speed,
             });
 
-            console.log('Fetched Weather Data:', data);
-
-            const futureResponse = await fetch(
-                `https://api.openweathermap.org/data/2.5/forecast?q=${searchInput}&appid=${apiKey}&units=metric`
+            // Fetch 5-day forecast
+            const forecastResponse = await fetch(
+                `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`
             );
-            if (!futureResponse.ok) {
+
+            if (!forecastResponse.ok) {
                 throw new Error('Failed to fetch forecast data');
             }
 
-            const forecastData = await futureResponse.json();
-
-            const dailyForecast = forecastData.list.filter((_, index) => index % 8 === 0).map((item) => ({
+            const forecast = await forecastResponse.json();
+            const dailyForecast = forecast.list.filter((_, index) => index % 8 === 0).map((item) => ({
                 date: new Date(item.dt * 1000).toLocaleDateString(),
                 weather: item.weather[0].description,
                 temp: item.main.temp,
@@ -61,35 +60,51 @@ export default function Search() {
             }));
 
             setFutureData(dailyForecast);
-            console.log('Fetched Forecast Data:', dailyForecast);
-
         } catch (error) {
             console.error('Error fetching weather data:', error);
             alert('Unable to fetch weather data. Please try again.');
         }
     };
 
+    const handleSearchFormSubmit = async (event) => {
+        event.preventDefault();
+        if (!searchInput.trim()) {
+            alert('You have not searched for a city!');
+            return;
+        }
+
+        const updatedHistory = [...searchedCities, searchInput];
+        setSearchedCities(updatedHistory);
+        localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+
+        await fetchWeatherData(searchInput);
+    };
+
+    const handleSavedSearch = async (city) => {
+        await fetchWeatherData(city);
+    };
+
     return (
         <div>
-            <div className='cityForm-area'>
-                <form className='city-form' onSubmit={handleSearchFormSubmit}>
-                    <div className='field'>
-                        <label className='label'>Search City</label>
-                        <div className='control'>
+            <div className="cityForm-area">
+                <form className="city-form" onSubmit={handleSearchFormSubmit}>
+                    <div className="field">
+                        <label className="label">Search City</label>
+                        <div className="control">
                             <input
-                                className='input'
-                                name='city'
+                                className="input"
+                                name="city"
                                 value={searchInput}
                                 onChange={handleChange}
-                                type='text'
-                                placeholder='Enter city name'
+                                type="text"
+                                placeholder="Enter city name"
                             />
                         </div>
                     </div>
-                    <button type='submit' className='button'>Search</button>
+                    <button type="submit" className="button">Search</button>
                 </form>
             </div>
-            <div className='current'>
+            <div className="current">
                 {weatherData ? (
                     <Current
                         title={weatherData.title}
@@ -103,21 +118,27 @@ export default function Search() {
                     <p>Please search for a city to see the weather.</p>
                 )}
                 {futureData ? (
-        futureData.map((day, index) => (
-            <Future
-                key={index}
-                date={day.date}
-                weather={day.weather}
-                temp={day.temp}
-                humidity={day.humidity}
-                wind={day.wind}
-            />
-        ))
-    ) : (
-        <p>Please search for a city to see the forecast.</p>
-    )}
+                    futureData.map((day, index) => (
+                        <Future
+                            key={index}
+                            date={day.date}
+                            weather={day.weather}
+                            temp={day.temp}
+                            humidity={day.humidity}
+                            wind={day.wind}
+                        />
+                    ))
+                ) : (
+                    <p>Please search for a city to see the forecast.</p>
+                )}
             </div>
+            <ul>
+                {searchedCities.map((city, index) => (
+                    <li key={index} onClick={() => handleSavedSearch(city)}>
+                        {city}
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
-
