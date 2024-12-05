@@ -22,7 +22,6 @@ export default function Search() {
 
     const fetchWeatherData = async (city) => {
         try {
-            // Fetch current weather
             const weatherResponse = await fetch(
                 `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
             );
@@ -41,7 +40,6 @@ export default function Search() {
                 wind: weather.wind.speed,
             });
 
-            // Fetch 5-day forecast
             const forecastResponse = await fetch(
                 `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`
             );
@@ -87,9 +85,9 @@ export default function Search() {
     return (
         <div>
             <div className="cityForm-area">
+                <h1 id='search-header'>Search For A City</h1>
                 <form className="city-form" onSubmit={handleSearchFormSubmit}>
                     <div className="field">
-                        <label className="label">Search City</label>
                         <div className="control">
                             <input
                                 className="input"
