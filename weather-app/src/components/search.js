@@ -8,6 +8,9 @@ export default function Search() {
     const [weatherData, setWeatherData] = useState(null);
     const [futureData, setFutureData] = useState(null);
     const [searchedCities, setSearchedCities] = useState([]);
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [hidden, setHidden] = useState(true);
+
 
     useEffect(() => {
         const storedCities = localStorage.getItem('searchHistory');
@@ -63,9 +66,13 @@ export default function Search() {
             alert('Unable to fetch weather data. Please try again.');
         }
     };
+    const handleButtonToggle = () => {
+        setHidden(false);
+    }
 
     const handleSearchFormSubmit = async (event) => {
         event.preventDefault();
+        setFormSubmitted(true);
         if (!searchInput.trim()) {
             alert('You have not searched for a city!');
             return;
@@ -77,31 +84,84 @@ export default function Search() {
 
         await fetchWeatherData(searchInput);
     };
-
+ 
     const handleSavedSearch = async (city) => {
         await fetchWeatherData(city);
     };
 
     return (
         <div>
+            {!formSubmitted ?
+            <div className='landing-area'>
             <div className="cityForm-area">
                 <h1 id='search-header'>Search For A City</h1>
                 <form className="city-form" onSubmit={handleSearchFormSubmit}>
                     <div className="field">
                         <div className="control">
                             <input
-                                className="input"
+                                className="input has-background-white has-text-black"
                                 name="city"
                                 value={searchInput}
                                 onChange={handleChange}
                                 type="text"
-                                placeholder="Enter city name"
                             />
                         </div>
                     </div>
-                    <button type="submit" className="button">Search</button>
+                    <button id='submit-btn' type="submit" className="button">Search</button>
+                    <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
                 </form>
+                </div>
             </div>
+            : 
+
+
+
+
+
+
+
+            <div className='submittedForm-area'>
+            <div className='cityForm-area'>
+                <h1 id='search-header'>Search For A City</h1>
+                <form className="city-form" onSubmit={handleSearchFormSubmit}>
+                    <div className="field">
+                        <div className="control">
+                            <input
+                                className="input has-background-white has-text-black"
+                                name="city"
+                                value={searchInput}
+                                onChange={handleChange}
+                                type="text"
+                            />
+                        </div>
+                    </div>
+                    <button id='submit-btn' type="submit" className="button">Search</button>
+                    <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
+                </form>
+                </div>
+            </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div className="current">
                 {weatherData ? (
                     <Current
@@ -113,7 +173,7 @@ export default function Search() {
                         wind={weatherData.wind}
                     />
                 ) : (
-                    <p>Please search for a city to see the weather.</p>
+                    <p></p>
                 )}
                 {futureData ? (
                     futureData.map((day, index) => (
@@ -127,9 +187,11 @@ export default function Search() {
                         />
                     ))
                 ) : (
-                    <p>Please search for a city to see the forecast.</p>
+                    <p></p>
                 )}
             </div>
+
+            {!hidden ?
             <ul>
                 {searchedCities.map((city, index) => (
                     <li key={index} onClick={() => handleSavedSearch(city)}>
@@ -137,6 +199,9 @@ export default function Search() {
                     </li>
                 ))}
             </ul>
+            :
+            <ul></ul>
+                }
         </div>
     );
 }
