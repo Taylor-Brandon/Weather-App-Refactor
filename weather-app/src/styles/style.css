@@ -35,6 +35,32 @@
     margin-top: 10px;
     margin-left: 120px;
 }
+.history-list{
+    font-family: "Poppins", sans-serif;
+    border: 1px solid white;
+    width: 25%;
+    padding: 20px;
+    text-align: center;
+    border-radius: 20px;
+    color:rgb(67, 67, 184);
+    background-color: white;
+    margin-top: 20px;
+    margin-left: 60px;
+}
+#history-item{
+    margin-top: 5px;
+    font-size: 18px;
+    transition: all 0.5s ease-out;
+}
+#del-btn{
+    margin-left: 5px;
+    color: rgb(248, 104, 104);
+    transition: all 0.5s ease-out;
+}
+#history-item:hover{
+    font-size: 20px;
+    cursor: pointer;
+}
 #submit-btn:hover{
     background-color: rgb(67, 67, 184);
     color: white;

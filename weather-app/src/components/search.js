@@ -73,21 +73,35 @@ export default function Search() {
     const handleSearchFormSubmit = async (event) => {
         event.preventDefault();
         setFormSubmitted(true);
+    
         if (!searchInput.trim()) {
             alert('You have not searched for a city!');
             return;
         }
-
-        const updatedHistory = [...searchedCities, searchInput];
-        setSearchedCities(updatedHistory);
-        localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
-
-        await fetchWeatherData(searchInput);
+    
+      
+        if (!searchedCities.includes(searchInput.trim())) {
+            const updatedHistory = [...searchedCities, searchInput.trim()];
+            setSearchedCities(updatedHistory);
+            localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+        }
+    
+        await fetchWeatherData(searchInput.trim());
     };
+    
  
     const handleSavedSearch = async (city) => {
         await fetchWeatherData(city);
     };
+
+    const handleDeleteHistory = (name) => {
+        let index = searchedCities.indexOf(name);
+        if (index !== -1) {
+            searchedCities.splice(index, 1);
+            localStorage.setItem('searchHistory', JSON.stringify(searchedCities));
+            setSearchedCities( [...searchedCities])
+        }
+    }
 
     return (
         <div>
@@ -192,10 +206,11 @@ export default function Search() {
             </div>
 
             {!hidden ?
-            <ul>
+            <ul className='history-list'>
                 {searchedCities.map((city, index) => (
-                    <li key={index} onClick={() => handleSavedSearch(city)}>
+                    <li id='history-item' key={index} onClick={() => handleSavedSearch(city)}>
                         {city}
+                        <button id='del-btn' onClick={() => handleDeleteHistory(city)}><i className="bi bi-x"></i></button>
                     </li>
                 ))}
             </ul>
