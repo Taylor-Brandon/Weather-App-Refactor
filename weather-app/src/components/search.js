@@ -19,6 +19,10 @@ export default function Search() {
         }
     }, []);
 
+    const handleButtonToggle = () => {
+        setHidden(false);
+    }
+
     const handleChange = (event) => {
         setSearchInput(event.target.value);
     };
@@ -66,9 +70,6 @@ export default function Search() {
             alert('Unable to fetch weather data. Please try again.');
         }
     };
-    const handleButtonToggle = () => {
-        setHidden(false);
-    }
 
     const handleSearchFormSubmit = async (event) => {
         event.preventDefault();
@@ -106,6 +107,7 @@ export default function Search() {
     return (
         <div>
             {!formSubmitted ?
+            <div className='search-component'>
             <div className='landing-area'>
             <div className="cityForm-area">
                 <h1 id='search-header'>Search For A City</h1>
@@ -122,9 +124,12 @@ export default function Search() {
                         </div>
                     </div>
                     <button id='submit-btn' type="submit" className="button">Search</button>
-                    <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
                 </form>
+                <div className='toggle-area'>
+                <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
                 </div>
+                </div>
+            </div>
             </div>
             : 
 
@@ -150,8 +155,8 @@ export default function Search() {
                         </div>
                     </div>
                     <button id='submit-btn' type="submit" className="button">Search</button>
-                    <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
                 </form>
+                <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
                 </div>
             </div>
 }
@@ -206,6 +211,7 @@ export default function Search() {
             </div>
 
             {!hidden ?
+            <div className='list-area'>
             <ul className='history-list'>
                 {searchedCities.map((city, index) => (
                     <li id='history-item' key={index} onClick={() => handleSavedSearch(city)}>
@@ -214,6 +220,7 @@ export default function Search() {
                     </li>
                 ))}
             </ul>
+            </div>
             :
             <ul></ul>
                 }

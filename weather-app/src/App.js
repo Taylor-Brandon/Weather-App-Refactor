@@ -6,11 +6,13 @@ import './styles/style.css';
 
 export default function App() {
     return (
+        <div className='app-background'>
         <Router>
             <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/result" element={<Result />} />
             </Routes>
         </Router>
+        </div>
     )
 }
