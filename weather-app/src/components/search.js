@@ -9,7 +9,6 @@ export default function Search() {
     const [futureData, setFutureData] = useState(null);
     const [searchedCities, setSearchedCities] = useState([]);
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [hidden, setHidden] = useState(true);
 
 
     useEffect(() => {
@@ -19,9 +18,6 @@ export default function Search() {
         }
     }, []);
 
-    const handleButtonToggle = () => {
-        setHidden(false);
-    }
 
     const handleChange = (event) => {
         setSearchInput(event.target.value);
@@ -30,7 +26,7 @@ export default function Search() {
     const fetchWeatherData = async (city) => {
         try {
             const weatherResponse = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`
             );
 
             if (!weatherResponse.ok) {
@@ -40,6 +36,7 @@ export default function Search() {
             const weather = await weatherResponse.json();
             setWeatherData({
                 title: weather.name,
+                icon: weather.icon,
                 date: new Date(weather.dt * 1000).toLocaleString(),
                 weather: weather.weather[0].description,
                 temp: weather.main.temp,
@@ -48,7 +45,7 @@ export default function Search() {
             });
 
             const forecastResponse = await fetch(
-                `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`
+                `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=standard`
             );
 
             if (!forecastResponse.ok) {
@@ -95,15 +92,6 @@ export default function Search() {
         await fetchWeatherData(city);
     };
 
-    const handleDeleteHistory = (name) => {
-        let index = searchedCities.indexOf(name);
-        if (index !== -1) {
-            searchedCities.splice(index, 1);
-            localStorage.setItem('searchHistory', JSON.stringify(searchedCities));
-            setSearchedCities( [...searchedCities])
-        }
-    }
-
     return (
         <div>
             {!formSubmitted ?
@@ -125,23 +113,13 @@ export default function Search() {
                     </div>
                     <button id='submit-btn' type="submit" className="button">Search</button>
                 </form>
-                <div className='toggle-area'>
-                <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
-                </div>
                 </div>
             </div>
             </div>
             : 
-
-
-
-
-
-
-
             <div className='submittedForm-area'>
-            <div className='cityForm-area'>
-                <h1 id='search-header'>Search For A City</h1>
+            <div className='resultForm-area'>
+                <h1 id='search-header'>Search For A City:</h1>
                 <form className="city-form" onSubmit={handleSearchFormSubmit}>
                     <div className="field">
                         <div className="control">
@@ -156,31 +134,18 @@ export default function Search() {
                     </div>
                     <button id='submit-btn' type="submit" className="button">Search</button>
                 </form>
-                <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
-                </div>
+                <div className='list-area'>
+            <ul className='history-list'>
+                {searchedCities.map((city, index) => (
+                    <li id='history-item' key={index} onClick={() => handleSavedSearch(city)}>
+                        {city}
+                    </li>
+                ))}
+            </ul>
             </div>
+        </div>
+                </div>
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div className="current">
                 {weatherData ? (
                     <Current
@@ -190,6 +155,7 @@ export default function Search() {
                         temp={weatherData.temp}
                         humidity={weatherData.humidity}
                         wind={weatherData.wind}
+                        icon={weatherData.icon}
                     />
                 ) : (
                     <p></p>
@@ -209,21 +175,6 @@ export default function Search() {
                     <p></p>
                 )}
             </div>
-
-            {!hidden ?
-            <div className='list-area'>
-            <ul className='history-list'>
-                {searchedCities.map((city, index) => (
-                    <li id='history-item' key={index} onClick={() => handleSavedSearch(city)}>
-                        {city}
-                        <button id='del-btn' onClick={() => handleDeleteHistory(city)}><i className="bi bi-x"></i></button>
-                    </li>
-                ))}
-            </ul>
-            </div>
-            :
-            <ul></ul>
-                }
-        </div>
+</div>
     );
 }

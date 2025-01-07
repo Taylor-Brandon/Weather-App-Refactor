@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Gowun+Batang&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 .app-background{
-    height: 100vh;
+    height: 150vh;
     background: linear-gradient(#b5d4fa, #6571ee, rgb(42, 42, 121));
 }
 .search-component{
@@ -19,9 +19,10 @@
 }
 .submittedForm-area{
     display: flex;
+    padding: 100px;
     justify-content: start;
-    margin-top: 100px;
-    margin-left: 140px;
+    margin-top: -60px;
+    margin-left: 100px;
 }
 #search-header{
     text-align: center;
@@ -36,37 +37,27 @@
     border-color: rgb(67, 67, 184);
     font-family: "Poppins", sans-serif;
 }
-.toggle-area{
-    margin-top: -30px;
-}
-#toggle-btn{
-    color: rgb(67, 67, 184);
-    margin-left: 120px;
-}
 .list-area{
     display: flex;
     justify-content: center;
-    margin-top: -180px;
     margin-left: -100px;
 }
 .history-list{
-    font-family: "Poppins", sans-serif;
-    border: 1px solid white;
-    width: 15%;
-    padding: 5px;
-    text-align: center;
-    border-radius: 20px;
-    color:rgb(67, 67, 184);
-    background-color: white;
+    width: 70%;
+    margin-top: 20px;
+    margin-left: 100px;
+    border-top: 1px solid black;
 }
 #history-item{
-    margin-top: 5px;
+    font-family: "Poppins", sans-serif;
+    padding: 5px;
+    text-align: center;
+    border-radius: 10px;
+    color: black;
+    background-color: rgb(206, 209, 211);
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-size: 18px;
-    transition: all 0.5s ease-out;
-}
-#del-btn{
-    margin-left: 5px;
-    color: rgb(248, 104, 104);
     transition: all 0.5s ease-out;
 }
 #history-item:hover{
@@ -76,4 +67,26 @@
 #submit-btn:hover{
     background-color: rgb(67, 67, 184);
     color: white;
+}
+.weather-area{
+    display: flex;
+    justify-content: center;
+    margin-left: 100px;
+    margin-top: -560px;
+}
+.weather-info{
+    border: 1px solid white;
+    font-family: "Poppins", sans-serif;
+    color: black;
+    background-color: white;
+    border-radius: 10px;
+    width: 65%;
+    padding: 20px;
+}
+.resultForm-area{
+    margin-left: -190px;
+}
+.weather-title{
+    font-weight: bold;
+    font-size: 25px;
 }
