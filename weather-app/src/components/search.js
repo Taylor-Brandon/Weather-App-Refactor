@@ -8,6 +8,9 @@ export default function Search() {
     const [weatherData, setWeatherData] = useState(null);
     const [futureData, setFutureData] = useState(null);
     const [searchedCities, setSearchedCities] = useState([]);
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [hidden, setHidden] = useState(true);
+
 
     useEffect(() => {
         const storedCities = localStorage.getItem('searchHistory');
@@ -16,13 +19,16 @@ export default function Search() {
         }
     }, []);
 
+    const handleButtonToggle = () => {
+        setHidden(false);
+    }
+
     const handleChange = (event) => {
         setSearchInput(event.target.value);
     };
 
     const fetchWeatherData = async (city) => {
         try {
-            // Fetch current weather
             const weatherResponse = await fetch(
                 `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
             );
@@ -41,7 +47,6 @@ export default function Search() {
                 wind: weather.wind.speed,
             });
 
-            // Fetch 5-day forecast
             const forecastResponse = await fetch(
                 `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`
             );
@@ -68,42 +73,114 @@ export default function Search() {
 
     const handleSearchFormSubmit = async (event) => {
         event.preventDefault();
+        setFormSubmitted(true);
+    
         if (!searchInput.trim()) {
             alert('You have not searched for a city!');
             return;
         }
-
-        const updatedHistory = [...searchedCities, searchInput];
-        setSearchedCities(updatedHistory);
-        localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
-
-        await fetchWeatherData(searchInput);
+    
+      
+        if (!searchedCities.includes(searchInput.trim())) {
+            const updatedHistory = [...searchedCities, searchInput.trim()];
+            setSearchedCities(updatedHistory);
+            localStorage.setItem('searchHistory', JSON.stringify(updatedHistory));
+        }
+    
+        await fetchWeatherData(searchInput.trim());
     };
-
+    
+ 
     const handleSavedSearch = async (city) => {
         await fetchWeatherData(city);
     };
 
+    const handleDeleteHistory = (name) => {
+        let index = searchedCities.indexOf(name);
+        if (index !== -1) {
+            searchedCities.splice(index, 1);
+            localStorage.setItem('searchHistory', JSON.stringify(searchedCities));
+            setSearchedCities( [...searchedCities])
+        }
+    }
+
     return (
         <div>
+            {!formSubmitted ?
+            <div className='search-component'>
+            <div className='landing-area'>
             <div className="cityForm-area">
+                <h1 id='search-header'>Search For A City</h1>
                 <form className="city-form" onSubmit={handleSearchFormSubmit}>
                     <div className="field">
-                        <label className="label">Search City</label>
                         <div className="control">
                             <input
-                                className="input"
+                                className="input has-background-white has-text-black"
                                 name="city"
                                 value={searchInput}
                                 onChange={handleChange}
                                 type="text"
-                                placeholder="Enter city name"
                             />
                         </div>
                     </div>
-                    <button type="submit" className="button">Search</button>
+                    <button id='submit-btn' type="submit" className="button">Search</button>
                 </form>
+                <div className='toggle-area'>
+                <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
+                </div>
+                </div>
             </div>
+            </div>
+            : 
+
+
+
+
+
+
+
+            <div className='submittedForm-area'>
+            <div className='cityForm-area'>
+                <h1 id='search-header'>Search For A City</h1>
+                <form className="city-form" onSubmit={handleSearchFormSubmit}>
+                    <div className="field">
+                        <div className="control">
+                            <input
+                                className="input has-background-white has-text-black"
+                                name="city"
+                                value={searchInput}
+                                onChange={handleChange}
+                                type="text"
+                            />
+                        </div>
+                    </div>
+                    <button id='submit-btn' type="submit" className="button">Search</button>
+                </form>
+                <button onClick={handleButtonToggle} id='toggle-btn'><i className="bi bi-clock-history"></i></button>
+                </div>
+            </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div className="current">
                 {weatherData ? (
                     <Current
@@ -115,7 +192,7 @@ export default function Search() {
                         wind={weatherData.wind}
                     />
                 ) : (
-                    <p>Please search for a city to see the weather.</p>
+                    <p></p>
                 )}
                 {futureData ? (
                     futureData.map((day, index) => (
@@ -129,16 +206,24 @@ export default function Search() {
                         />
                     ))
                 ) : (
-                    <p>Please search for a city to see the forecast.</p>
+                    <p></p>
                 )}
             </div>
-            <ul>
+
+            {!hidden ?
+            <div className='list-area'>
+            <ul className='history-list'>
                 {searchedCities.map((city, index) => (
-                    <li key={index} onClick={() => handleSavedSearch(city)}>
+                    <li id='history-item' key={index} onClick={() => handleSavedSearch(city)}>
                         {city}
+                        <button id='del-btn' onClick={() => handleDeleteHistory(city)}><i className="bi bi-x"></i></button>
                     </li>
                 ))}
             </ul>
+            </div>
+            :
+            <ul></ul>
+                }
         </div>
     );
 }
