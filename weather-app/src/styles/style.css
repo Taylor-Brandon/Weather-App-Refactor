@@ -126,3 +126,50 @@
     background-color: rgb(67, 67, 184);
     color: white;
 }
+@media (max-width: 1150px) {
+    .current{
+        margin-right: -190px;
+    }
+    .future-area{
+        margin-left: 350px;
+    }
+}
+@media (max-width: 1050px) {
+    .current{
+        width: 85%;
+        margin-left: 100px;
+    }
+}
+@media (max-width: 700px) {
+    .current{
+        margin-left: 150px;
+    }
+}
+@media (max-width: 600px) {
+    .current{
+        width: 75%;
+    }
+    .future-area{
+        margin-left: 300px;
+    }
+    .forecast-info{
+        height: 350px;
+    }
+}
+@media (max-width: 500px) {
+   .current{
+    font-size: 10px;
+   }
+   .weather-title{
+    font-size: 15px;
+   }
+   .future-area{
+    font-size: 10px;
+   }
+   .future-title{
+    font-size: 10px;
+   }
+   .forecast-info{
+    height: 200px;
+   }
+}
