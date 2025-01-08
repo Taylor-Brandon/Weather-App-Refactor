@@ -17,12 +17,17 @@
     padding: 20px;
     margin-left: -120px;
 }
+.current{
+    position: absolute;
+    width: 100%;
+    bottom: 350px;
+}
 .submittedForm-area{
     display: flex;
     padding: 100px;
     justify-content: start;
-    margin-top: -60px;
     margin-left: 100px;
+    margin-top: -50px;
 }
 #search-header{
     text-align: center;
@@ -83,8 +88,9 @@
     font-size: 25px;
 }
 .future-area{
-    margin-left: 300px;
-    margin-top: 30px;
+    position: absolute;
+    top: 300px;
+    left: 300px;
 }
 #future-header{
     font-family: "Poppins", sans-serif;
@@ -127,22 +133,41 @@
     color: white;
 }
 @media (max-width: 1150px) {
+    .search-component{
+        margin-right: -200px;
+    }
     .current{
-        margin-right: -190px;
+        right: -50px;
     }
     .future-area{
-        margin-left: 350px;
+        left: 280px;
+    }
+    .app-background{
+        height: 200vh;
     }
 }
 @media (max-width: 1050px) {
+    .search-component{
+        margin-right: -250px;
+    }
     .current{
         width: 85%;
-        margin-left: 100px;
+        left: 120px;
+    }
+    .future-area{
+        top: 340px;
+        
     }
 }
 @media (max-width: 700px) {
+    .search-component{
+        margin-left: -200px;
+    }
     .current{
-        margin-left: 150px;
+        left: 140px;
+    }
+    .future-area{
+        top: 360px;
     }
 }
 @media (max-width: 600px) {
@@ -150,13 +175,20 @@
         width: 75%;
     }
     .future-area{
-        margin-left: 300px;
+        top: 400px;
+        right: -10px;
     }
     .forecast-info{
         height: 350px;
     }
+    .app-background{
+        height: 280vh;
+    }
 }
 @media (max-width: 500px) {
+    .search-component{
+        margin-right: -350px;
+    }
    .current{
     font-size: 10px;
    }
