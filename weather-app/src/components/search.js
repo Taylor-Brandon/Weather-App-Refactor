@@ -45,7 +45,7 @@ export default function Search() {
             });
 
             const forecastResponse = await fetch(
-                `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=standard`
+                `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=imperial`
             );
 
             if (!forecastResponse.ok) {
@@ -160,6 +160,9 @@ export default function Search() {
                 ) : (
                     <p></p>
                 )}
+                </div>
+                <div className='future-area'>
+                    <h2 id='future-header'>Five Day Forecast:</h2>
                 {futureData ? (
                     futureData.map((day, index) => (
                         <Future
@@ -174,7 +177,7 @@ export default function Search() {
                 ) : (
                     <p></p>
                 )}
-            </div>
+                </div>
 </div>
     );
 }
