@@ -60,14 +60,6 @@
     font-size: 18px;
     transition: all 0.5s ease-out;
 }
-#history-item:hover{
-    font-size: 20px;
-    cursor: pointer;
-}
-#submit-btn:hover{
-    background-color: rgb(67, 67, 184);
-    color: white;
-}
 .weather-area{
     display: flex;
     justify-content: center;
@@ -104,7 +96,6 @@
    display: inline-block;
     padding: 10px;
 }
-
 .forecast-area {
     display: flex;
     flex-wrap: wrap;
@@ -113,7 +104,6 @@
     margin-right: 20px;
     margin-top: 10px;
 }
-
 .forecast-info {
     padding: 20px;
     color: white;
@@ -124,8 +114,15 @@
     height: 250px;
     width: 100%;
 }
-
 .future-title {
     font-weight: bold;
     font-size: 15px;
+}
+#history-item:hover{
+    font-size: 20px;
+    cursor: pointer;
+}
+#submit-btn:hover{
+    background-color: rgb(67, 67, 184);
+    color: white;
 }

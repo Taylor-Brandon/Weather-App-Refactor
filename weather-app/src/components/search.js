@@ -34,9 +34,10 @@ export default function Search() {
             }
 
             const weather = await weatherResponse.json();
+            const iconImg = weather.weather[0].icon;
             setWeatherData({
                 title: weather.name,
-                icon: weather.icon,
+                icon: iconImg,
                 date: new Date(weather.dt * 1000).toLocaleString(),
                 weather: weather.weather[0].description,
                 temp: weather.main.temp,
@@ -56,6 +57,7 @@ export default function Search() {
             const dailyForecast = forecast.list.filter((_, index) => index % 8 === 0).map((item) => ({
                 date: new Date(item.dt * 1000).toLocaleDateString(),
                 weather: item.weather[0].description,
+                icon: item.weather[0].icon,
                 temp: item.main.temp,
                 humidity: item.main.humidity,
                 wind: item.wind.speed,
@@ -162,7 +164,6 @@ export default function Search() {
                 )}
                 </div>
                 <div className='future-area'>
-                    <h2 id='future-header'>Five Day Forecast:</h2>
                 {futureData ? (
                     futureData.map((day, index) => (
                         <Future
@@ -172,6 +173,7 @@ export default function Search() {
                             temp={day.temp}
                             humidity={day.humidity}
                             wind={day.wind}
+                            icon={day.icon}
                         />
                     ))
                 ) : (
