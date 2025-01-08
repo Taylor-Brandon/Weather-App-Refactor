@@ -90,3 +90,42 @@
     font-weight: bold;
     font-size: 25px;
 }
+.future-area{
+    margin-left: 300px;
+    margin-top: 30px;
+}
+#future-header{
+    font-family: "Poppins", sans-serif;
+    color: black;
+    font-size: 25px;
+    margin-left: 10px;
+}
+.future {
+   display: inline-block;
+    padding: 10px;
+}
+
+.forecast-area {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.forecast-info {
+    padding: 20px;
+    color: white;
+    background-color: rgb(35, 35, 102);
+    font-family: "Poppins", sans-serif;
+    border-radius: 10px;
+    text-align: center;
+    height: 250px;
+    width: 100%;
+}
+
+.future-title {
+    font-weight: bold;
+    font-size: 15px;
+}
