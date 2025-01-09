@@ -44,7 +44,7 @@ This project can be accessed via the live demo link or locally by following thes
 - Local Storage
 - CSS Animations
 - Bulma Framework
-- Open Weather Map API
+- OpenWeatherMap API
 - Google Fonts
 - Dotenv
 
