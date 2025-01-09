@@ -10,7 +10,6 @@ export default function Current({ title, date, weather, temp, humidity, wind, ic
             <p>Temperature: {temp}°C</p>
             <p>Humidity: {humidity}%</p>
             <p>Wind Speed: {wind} m/s</p>
-            <p>{icon}</p>
         </div>
         </div>
     );

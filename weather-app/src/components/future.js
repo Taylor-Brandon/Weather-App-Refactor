@@ -7,7 +7,7 @@ export default function Future({ title, date, weather, temp, humidity, wind, ico
         <div className='future'>
         <div className='forecast-area'>
         <div className='forecast-info'>
-            <h2 className='future-title'>{title} ({date && new Date(date).toLocaleString()})</h2>
+            <h2 className='future-title'>{date && new Date(date).toLocaleString()}</h2>
             <img src={iconUrl} alt={weather}/>
             <p>Temperature: {temp}°C</p>
             <p>Humidity: {humidity}%</p>
